@@ -1,0 +1,191 @@
+function dungeon2()
+{
+	dungeonLevel = 2;
+	for(let i = 0; i <= currentMap.length; i++)
+	{
+		if(
+		currentMap[i] == 59
+		)
+		{
+			tileEdgeFinder(i);
+			dungeonEntranceX = leftTileEdge;
+			dungeonEntranceY = topTileEdge;
+		}
+	}
+	if(
+			heroX <= dungeonEntranceX + 6 &&
+			heroX + 6 >= dungeonEntranceX &&
+			heroY <= dungeonEntranceY + 6 &&
+			heroY + 2 >= dungeonEntranceY &&
+			lastButtonPressed == "up"
+		)
+	{
+		heroInDungeon2 = true;
+		dungeonEntranceX = 0;
+		dungeonEntranceY = 0;
+		previousMap = currentMap;
+		heroExitX = heroX;
+		heroExitY = heroY;
+		heroX = 120;
+		heroY = 220;
+		currentMapEnemies = [
+			{enemyType01: 0},
+			{enemyType02: 0},
+			{enemyType03: 0},
+			{enemyType04: 0},
+			{enemyType05: 0},
+			{enemyType06: 0},
+			{enemyType07: 0},
+			{enemyType08: 0},
+			{enemyType09: 0},
+			{enemyType10: 0}
+		];
+		createEnemies();
+		bossShowing = true;
+	}
+	if(heroInDungeon2)
+	{
+		currentMap = mapDungeon2;
+		if(heroY > 226)
+		{
+			heroX = heroExitX;
+			heroY = heroExitY;
+			currentMap = previousMap;
+			heroInDungeon2 = false;
+			currentMapEnemies = eval("enemyProfile" + enemyProfileAssignments[currentMapName]);
+			createEnemies();
+			bossShowing = false;
+			prizeShowing = false;
+			bossReset();
+			prizeX = 0;
+		}
+	}
+	if(bossExistence[1] == 1 && bossShowing == true && heroInDungeon1 == false)///////////////////
+	{
+		if(bossHealth < 10)////////////////////////
+		{
+			bossSpeed = 3;//////////////////////
+		}
+		if(bossNeedsNewNode == true)
+		{
+			bossNode = Math.floor(Math.random() * 4 + 1)/////////////////////////
+			if(bossNode == 1) // left
+			{
+				bossNewX = -50;
+				bossNewY = Math.floor(Math.random() * (192 - 80 + 1)) + 80; // 80-192
+				bossOldX = bossNewX + 300;
+				bossOldY = bossNewY;
+				bossDirection = "left";
+			}
+			if(bossNode == 2) // up
+			{
+				bossNewX = Math.floor(Math.random() * (208 - 16 + 1)) + 16; // 16-208
+				bossNewY = 14; // 64 - 50
+				bossOldX = bossNewX;
+				bossOldY = bossNewY + 300;
+				bossDirection = "up";
+			}
+			if(bossNode == 3) // right
+			{
+				bossNewX = 274 // 256 + 50 - 32
+				bossNewY = Math.floor(Math.random() * (192 - 80 + 1)) + 80; // 80-192
+				bossOldX = bossNewX - 300;
+				bossOldY = bossNewY;
+				bossDirection = "right";
+			}
+			if(bossNode == 4) // down
+			{
+				bossNewX = Math.floor(Math.random() * (208 - 16 + 1)) + 16; // 16-208
+				bossNewY = 258; // 240 + 50 - 32
+				bossOldX = bossNewX;
+				bossOldY = bossNewY - 300;
+				bossDirection = "down";
+			}
+			bossNeedsNewNode = false;
+		}
+		bossAnimationFrame++;
+		if(bossAnimationFrame == 5)
+		{
+			bossSpriteRow++;
+		}
+		if(bossAnimationFrame >= 10)
+		{
+			bossSpriteRow = 3;/////////////////////////
+			bossAnimationFrame = 1;
+		}
+		if(bossDirection == "down")
+		{
+			bossSpriteColumn = 1;
+		}
+		if(bossDirection == "left")
+		{
+			bossSpriteColumn = 2;
+		}
+		if(bossDirection == "up")
+		{
+			bossSpriteColumn = 3;
+		}
+		if(bossDirection == "right")
+		{
+			bossSpriteColumn = 4;
+		}
+		bossX = Math.round(bossOldX + ((bossNewX - bossOldX)*(bossMovementFrame/(200/bossSpeed))));/////////////////
+		bossY = Math.round(bossOldY + ((bossNewY - bossOldY)*(bossMovementFrame/(200/bossSpeed))));/////////////////
+		bossMovementFrame++;
+		if(bossMovementFrame >= 200/bossSpeed)
+		{
+			bossMovementFrame = 1;
+			bossNeedsNewNode = true;
+			bossX = bossNewX;
+			bossY = bossNewY;
+		}
+		ctx.drawImage(bossSprite, bossSpriteColumn * 32 - 32, bossSpriteRow * 32 - 32, 32, 32, bossX, bossY, 32, 32);
+		ctx.drawImage(bossHealthSprite, 0, 0, 1, 3, 57, 85, 1, 3); //left end
+		for(let i = 0; i < 10; i++)
+		{
+			ctx.drawImage(bossHealthSprite, 15, 0, 14, 3, 58 + (i*14), 85, 14, 3); // max health	
+		}
+		bossHealthBars = Math.floor(9 * (bossHealth / bossMaxHealth)) + 1;
+		if(bossHealthBars != 0)
+		{
+			for(let i = 0; i < bossHealthBars; i++)
+			{
+				ctx.drawImage(bossHealthSprite, 1, 0, 14, 3, 58 + (i*14), 85, 14, 3); // max health	
+			}
+		}
+		ctx.drawImage(bossHealthSprite, 29, 0, 1, 3, 198, 85, 1, 3); //right end
+	}
+	if(bossExistence[1] == 0 && prizeX == 0 && heroInDungeon2 == true)
+	{
+		if(heroX < 120)
+		{
+			prizeX = 188;
+		}
+		else
+		{
+			prizeX = 52;
+		}
+	}
+	if(bossExistence[1] == 0 && currentPrize == 1 && heroInDungeon2 == true)
+	{
+		prizeShowing = true;
+	}
+	if(bossExistence[1] == 0 && currentPrize == 1 && prizeShowing)
+	{
+		ctx.drawImage(prizeSprite, 32, 0, 32, 48, prizeX, 128, 32, 48);
+	}
+	if(
+		prizeShowing == true &&
+		heroX <= prizeX + 32 &&
+		heroX + 16 >= prizeX &&
+		heroY <= 128 + 48 &&
+		heroY + 16 >= 128
+	)
+	{
+		prizeX = 0;
+		currentPrize = 2;
+		prizeShowing = false;
+		bossSpriteRow = 5;
+	}
+	//boss does less damage if have defense item
+}
