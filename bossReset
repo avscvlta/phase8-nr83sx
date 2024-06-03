@@ -1,0 +1,21 @@
+function bossReset()
+{
+	bossX = 0;
+	bossY = 0;
+	bossSpriteColumn = 1;
+	//bossSpriteRow = 1;/////////////////////////////////
+	bossAnimationFrame = 1;
+	bossDirection = "right";
+	bossNode = 1;///////////////////////////
+	previousBossNode = 0;//////////////////////
+	bossNeedsNewNode = true;//////////////////////
+	bossMovementFrame = 1;
+	bossNewX = 20;//////////////////////
+	bossNewY = 84;/////////////////////////
+	bossOldX;
+	bossOldY;
+	bossSpeed = 2;/////////////////////
+	bossHealth = 20;///////////////////////
+	bossMaxHealth = 20;/////////////////////
+	bossHealthBars = 10;
+}
