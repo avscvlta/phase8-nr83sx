@@ -1,0 +1,50 @@
+function bossAttackDetection()
+{
+	if(attacking)
+	{
+		if(lastButtonPressed == "left")
+		{
+			if(bossX + 32 >= heroX - attackLength &&
+				bossX + 32 <= heroX + 8 &&
+				bossY + 32 >= heroY &&
+				bossY <= heroY + 16
+			)
+			{
+				bossHit();
+			}
+		}
+		if(lastButtonPressed == "right")
+		{
+			if(bossX <= heroX + 16 + attackLength &&
+				bossX >= heroX + 8 &&
+				bossY + 32 >= heroY &&
+				bossY <= heroY + 16
+			)
+			{
+				bossHit();
+			}
+		}
+		if(lastButtonPressed == "up")
+		{
+			if(bossX + 32 >= heroX &&
+				bossX <= heroX + 16 &&
+				bossY + 32 >= heroY - attackLength &&
+				bossY + 32 <= heroY + 8
+			)
+			{
+				bossHit();
+			}
+		}
+		if(lastButtonPressed == "down")
+		{
+			if(bossX + 32 >= heroX &&
+				bossX <= heroX + 16 &&
+				bossY >= heroY + 8 &&
+				bossY <= heroY + 16 + attackLength
+			)
+			{
+				bossHit();
+			}
+		}
+	}
+}
