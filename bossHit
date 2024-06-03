@@ -1,0 +1,14 @@
+function bossHit()
+{
+	if(canWhackEnemy)
+	{
+		bossHealth = bossHealth - currentAttackLevel;
+		canWhackEnemy = false;
+		if(bossHealth <= 0)
+		{
+			bossExistence[dungeonLevel - 1] = 0;
+			bossReset();
+			prizeShowing = true;
+		}
+	}
+}
