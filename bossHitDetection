@@ -1,0 +1,38 @@
+function bossHitDetection()
+{
+	if(
+		heroX + 16 > bossX &&
+		heroX < bossX + 32 &&
+		heroY + 16 > bossY &&
+		heroY < bossY + 32 &&
+		!heroInvincibility
+	)
+	{
+		if(currentHealth > 0)
+		{
+			currentHealth = currentHealth - (1 * currentDefenseLevel);
+		}
+		heroInvincibility = true;
+		invincibilityCounter = 1;
+	}
+	if(invincibilityCounter == 1)
+	{
+		heroBlink = true;
+	}
+	if(invincibilityCounter > 0)
+	{
+		heroBlink = false;
+		invincibilityCounter = invincibilityCounter + 1;
+		let loggedHeroX = heroX;
+		if(invincibilityCounter%10 <= 4)
+		{
+			heroBlink = true;				
+		}
+	}
+	if(invincibilityCounter > 85)
+	{
+		invincibilityCounter = 0;
+		heroInvincibility = false;
+		heroBlink = false;
+	}
+}
