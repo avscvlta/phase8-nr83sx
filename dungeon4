@@ -1,0 +1,203 @@
+function dungeon4()
+{
+	dungeonLevel = 4;
+	for(let i = 0; i <= currentMap.length; i++)
+	{
+		if(
+		currentMap[i] == 119
+		)
+		{
+			tileEdgeFinder(i);
+			dungeonEntranceX = leftTileEdge;
+			dungeonEntranceY = topTileEdge;
+		}
+	}
+	if(
+			heroX <= dungeonEntranceX + 6 &&
+			heroX + 6 >= dungeonEntranceX &&
+			heroY <= dungeonEntranceY + 6 &&
+			heroY + 2 >= dungeonEntranceY &&
+			lastButtonPressed == "up"
+		)
+	{
+		heroInDungeon4 = true;
+		dungeonEntranceX = 0;
+		dungeonEntranceY = 0;
+		previousMap = currentMap;
+		heroExitX = heroX;
+		heroExitY = heroY;
+		heroX = 120;
+		heroY = 220;
+		currentMapEnemies = [
+			{enemyType01: 0},
+			{enemyType02: 0},
+			{enemyType03: 0},
+			{enemyType04: 0},
+			{enemyType05: 0},
+			{enemyType06: 0},
+			{enemyType07: 0},
+			{enemyType08: 0},
+			{enemyType09: 0},
+			{enemyType10: 0}
+		];
+		createEnemies();
+		bossShowing = true;
+	}
+	if(heroInDungeon4)
+	{
+		currentMap = mapDungeon4;
+		if(heroY > 226)
+		{
+			heroX = heroExitX;
+			heroY = heroExitY;
+			currentMap = previousMap;
+			heroInDungeon4 = false;
+			currentMapEnemies = eval("enemyProfile" + enemyProfileAssignments[currentMapName]);
+			createEnemies();
+			bossShowing = false;
+			prizeShowing = false;
+			bossReset();
+			prizeX = 0;
+		}
+	}
+	if(bossExistence[3] == 1 && bossShowing == true && heroInDungeon3 == false)///////////////////
+	{
+		if(bossX == 0)
+		{
+			bossX = 120;
+			bossY = 128;
+		}
+		if(randomPause >= .998)
+		{
+			randomPauseCounter = 1;
+			randomPause = 0;
+		}
+		if(randomPauseCounter > 0)
+		{
+			randomPauseCounter++;
+		}
+		if(randomPauseCounter >= 75)
+		{
+			randomPauseCounter = 0;
+		}
+		if(randomPauseCounter == 0)
+		{
+			randomPause = Math.random();
+			bossSpeed = -0.015 * bossHealth + 1.1;
+			bossXAheadOfHero = (bossX+16) - (heroX+8);
+			bossYAheadOfHero = (bossY+16) - (heroY+8);
+			distanceHeroToBoss = Math.round(Math.sqrt(Math.pow(bossXAheadOfHero, 2) + Math.pow(bossYAheadOfHero, 2)));
+			if(distanceHeroToBoss == 0)
+			{
+				bossXChange = 0;
+				bossYChange = 0;
+			}
+			else
+			{
+				bossXChange = Math.round(bossSpeed * 100 * (bossXAheadOfHero / distanceHeroToBoss)) / 100;
+				bossYChange = Math.round(bossSpeed * 100 * (bossYAheadOfHero / distanceHeroToBoss)) / 100;
+			}
+		}
+		console.log(bossSpeed);
+		bossAnimationFrame++;
+		if(bossAnimationFrame == 5)
+		{
+			bossSpriteRow++;
+		}
+		if(bossAnimationFrame >= 10)
+		{
+			bossSpriteRow = 7;/////////////////////////
+			bossAnimationFrame = 1;
+		}
+		if(Math.abs(bossX-heroX)>Math.abs(bossY-heroY)) //facing left or right
+		{
+			if((bossX-heroX)>0)
+			{
+				bossDirection = "left";
+			}
+			else
+			{
+				bossDirection = "right";
+			}
+		}
+		else
+		{
+			if((bossY-heroY)>0)
+			{
+				bossDirection = "up";
+			}
+			else
+			{
+				bossDirection = "down";
+			}
+		}
+		if(bossDirection == "down")
+		{
+			bossSpriteColumn = 1;
+		}
+		if(bossDirection == "left")
+		{
+			bossSpriteColumn = 2;
+		}
+		if(bossDirection == "up")
+		{
+			bossSpriteColumn = 3;
+		}
+		if(bossDirection == "right")
+		{
+			bossSpriteColumn = 4;
+		}
+		bossMovementFrame++;
+		if(randomPauseCounter == 0)
+		{
+			bossX = Math.round(bossX - bossXChange + (0.4 * Math.random()));
+			bossY = Math.round(bossY - bossYChange + (0.4 * Math.random()));
+		}
+		ctx.drawImage(bossSprite, bossSpriteColumn * 32 - 32, bossSpriteRow * 32 - 32, 32, 32, bossX, bossY, 32, 32);
+		ctx.drawImage(bossHealthSprite, 0, 0, 1, 3, 57, 85, 1, 3); //left end
+		for(let i = 0; i < 10; i++)
+		{
+			ctx.drawImage(bossHealthSprite, 15, 0, 14, 3, 58 + (i*14), 85, 14, 3); // max health	
+		}
+		bossHealthBars = Math.floor(9 * (bossHealth / bossMaxHealth)) + 1;
+		if(bossHealthBars != 0)
+		{
+			for(let i = 0; i < bossHealthBars; i++)
+			{
+				ctx.drawImage(bossHealthSprite, 1, 0, 14, 3, 58 + (i*14), 85, 14, 3); // max health	
+			}
+		}
+		ctx.drawImage(bossHealthSprite, 29, 0, 1, 3, 198, 85, 1, 3); //right end
+	}
+	if(bossExistence[3] == 0 && prizeX == 0  && heroInDungeon4 == true)
+	{
+		if(heroX < 120)
+		{
+			prizeX = 188;
+		}
+		else
+		{
+			prizeX = 52;
+		}
+	}
+	if(bossExistence[3] == 0 && currentPrize == 3 && heroInDungeon4 == true)
+	{
+		prizeShowing = true;
+	}
+	if(bossExistence[3] == 0 && currentPrize == 3 && prizeShowing)
+	{
+		ctx.drawImage(prizeSprite, 96, 0, 32, 48, prizeX, 128, 32, 48);
+	}
+	if(
+		prizeShowing == true &&
+		heroX <= prizeX + 32 &&
+		heroX + 16 >= prizeX &&
+		heroY <= 128 + 48 &&
+		heroY + 16 >= 128
+	)
+	{
+		prizeX = 0;
+		currentPrize = 4;
+		prizeShowing = false;
+	}
+}
