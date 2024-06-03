@@ -127,13 +127,6 @@ let canWhackEnemy = true;
 let heroBlink = false;
 let currentAttackLevel = 0;
 let currentDefenseLevel = 1;
-//Dungeons
-let dungeonEntranceX = 0;
-let dungeonEntranceY = 0;
-let heroInDungeon1 = false;
-let heroInDungeon2 = false;
-let heroInDungeon3 = false;
-let heroInDungeon4 = false;
 
 function overworldBuilder()
 {
