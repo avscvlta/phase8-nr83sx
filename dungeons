@@ -1,0 +1,28 @@
+function dungeons()
+{
+	if(currentPrize == 0 || heroInDungeon1 == true)
+	{
+		dungeon1();
+	}
+	if(currentPrize == 1 || heroInDungeon2 == true)
+	{
+		if(bossSpriteRow < 3)
+		{
+		}
+		dungeon2();
+	}
+	if(currentPrize == 2 || heroInDungeon3 == true)
+	{
+		if(bossSpriteRow < 5)
+		{
+		}
+		dungeon3();
+	}
+	if(currentPrize == 3 || heroInDungeon4 == true)
+	{
+		if(bossSpriteRow < 7)
+		{
+		}
+		dungeon4();
+	}
+}
